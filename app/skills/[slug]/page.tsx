@@ -9,7 +9,8 @@ import {
   FaPython, 
   FaReact, 
   FaAws, 
-  FaDocker, 
+  FiTool,
+  FiDatabase
   FaJava, 
   FaGitAlt, 
   FaNodeJs,

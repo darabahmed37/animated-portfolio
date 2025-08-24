@@ -28,17 +28,33 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus('idle');
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
       setIsSubmitting(false);
-      // Randomly simulate success or error for demo
-      setSubmitStatus(Math.random() > 0.5 ? 'success' : 'error');
-      
-      if (submitStatus !== 'error') {
+
+      if (response.ok) {
+        setSubmitStatus('success');
         setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+        console.error('Server error:', result.error);
       }
-    }, 2000);
+    } catch (error) {
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      console.error('Network error:', error);
+    }
   };
 
   const resetStatus = () => {
